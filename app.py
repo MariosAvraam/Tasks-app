@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from forms import TodoForm, BoardForm, TaskForm
 from flask_bootstrap import Bootstrap5
+from flask import jsonify
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
@@ -88,6 +89,21 @@ def add_todo():
         flash('Task added successfully!', 'success')
         return redirect(url_for('index'))
     return render_template('add_todo.html', form=form)
+
+@app.route('/update_task_column', methods=['POST'])
+def update_task_column():
+    data = request.json
+    task_id = data['task_id']
+    new_column_id = data['column_id']
+
+    task = Todo.query.get(task_id)
+    if not task:
+        return jsonify(status='error', message='Task not found')
+
+    task.column_id = new_column_id
+    db.session.commit()
+
+    return jsonify(status='success')
 
 
 
