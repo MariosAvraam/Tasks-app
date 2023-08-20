@@ -1,8 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from forms import TodoForm
+from flask_bootstrap import Bootstrap5
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
+app.config['SECRET_KEY'] = 'Secret_Key'
+Bootstrap5(app)
+
 db = SQLAlchemy()
 db.init_app(app)
 
@@ -17,12 +22,22 @@ def index():
     todos = result.all()
     return render_template("index.html", all_todos=todos)
 
-@app.route('/add', methods=['POST'])
+@app.route('/add_todo', methods=['GET', 'POST'])
 def add_todo():
-    task = request.form.get('task')
-    if task:
-        todos.append({"task": task, "completed": False})
-    return redirect(url_for('index'))
+    form = TodoForm()
+    if form.validate_on_submit():
+        task = form.task.data
+        new_todo = Todo(
+            task=task,
+            completed=False,
+        )
+        db.session.add(new_todo)
+        db.session.commit()
+        flash('Task added successfully!', 'success')
+        return redirect(url_for('index'))
+    return render_template('add_todo.html', form=form)
+
+
 
 @app.route('/complete/<int:index>')
 def complete_todo(index):

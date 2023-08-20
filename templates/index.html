@@ -10,10 +10,7 @@
 <body>
   <h1>Todo List</h1>
 
-  <form action="/add" method="post">
-    <input type="text" name="task" placeholder="Add a new task" required>
-    <button type="submit">Add</button>
-  </form>
+  <a href="{{ url_for('add_todo') }}">Add Todo</a>
 
   <ul>
     {% for todo in all_todos %}
