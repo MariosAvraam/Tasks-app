@@ -11,12 +11,11 @@ class Todo(db.Model):
     task = db.Column(db.String(200), nullable=False)
     completed = db.Column(db.Boolean, default=False)
 
-# Sample data structure for todo items
-todos = []
-
 @app.route('/')
 def index():
-    return render_template('index.html', todos=todos)
+    result = db.session.execute(db.select(Todo)).scalars()
+    todos = result.all()
+    return render_template("index.html", all_todos=todos)
 
 @app.route('/add', methods=['POST'])
 def add_todo():

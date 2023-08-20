@@ -16,7 +16,7 @@
   </form>
 
   <ul>
-    {% for todo in todos %}
+    {% for todo in all_todos %}
     <li>
       {{ todo.task }}
       {% if not todo.completed %}
