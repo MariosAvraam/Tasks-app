@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from forms import TodoForm, BoardForm
+from forms import TodoForm, BoardForm, TaskForm
 from flask_bootstrap import Bootstrap5
 
 app = Flask(__name__)
@@ -59,6 +59,19 @@ def display_board(board_id):
     board = Board.query.get_or_404(board_id)
     columns = Column.query.filter_by(board_id=board_id).all()
     return render_template('board.html', board=board, columns=columns)
+
+@app.route('/board/<int:board_id>/add_task/<int:column_id>', methods=['GET', 'POST'])
+def add_task(board_id, column_id):
+    form = TaskForm()
+    if form.validate_on_submit():
+        task_content = form.task_content.data
+        new_task = Todo(task=task_content, completed=False, column_id=column_id)
+        db.session.add(new_task)
+        db.session.commit()
+        flash('Task added successfully!', 'success')
+        return redirect(url_for('display_board', board_id=board_id))
+    return render_template('add_task.html', form=form)
+
 
 
 @app.route('/add_todo', methods=['GET', 'POST'])
