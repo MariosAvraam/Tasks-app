@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ board.title }}</h2>
+<div class="board-columns">
+    {% for column in columns %}
+    <div class="column">
+        <h3>{{ column.title }}</h3>
+        <ul>
+            {% for todo in column.todos %}
+            <li>
+                {{ todo.task }}
+                {% if not todo.completed %}
+                <a href="/complete/{{ todo.id }}">Complete</a>
+                {% else %}
+                (Completed)
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

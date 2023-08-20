@@ -1,30 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Todo List</title>
-</head>
-
-<body>
-  <h1>Todo List</h1>
-
-  <a href="{{ url_for('add_todo') }}">Add Todo</a>
-
-  <ul>
-    {% for todo in all_todos %}
-    <li>
-      {{ todo.task }}
-      {% if not todo.completed %}
-      <a href="/complete/{{ loop.index0 }}">Complete</a>
-      {% else %}
-      (Completed)
-      {% endif %}
-    </li>
-    {% endfor %}
-  </ul>
-
-</body>
-
-</html>
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Boards</h2>
+<ul>
+  {% for board in all_boards %}
+  <li><a href="{{ url_for('display_board', board_id=board.id) }}">
+      {{ board.title }}</a></li>
+  {% endfor %}
+</ul>
+<a href="{{ url_for('create_board') }}">Create a New Board</a>
+{% endblock %}

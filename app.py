@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from forms import TodoForm
+from forms import TodoForm, BoardForm
 from flask_bootstrap import Bootstrap5
 
 app = Flask(__name__)
@@ -11,16 +11,55 @@ Bootstrap5(app)
 db = SQLAlchemy()
 db.init_app(app)
 
+class Board(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    columns = db.relationship('Column', backref='board', lazy=True)
+
+class Column(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    board_id = db.Column(db.Integer, db.ForeignKey('board.id'), nullable=False)
+    todos = db.relationship('Todo', backref='column', lazy=True)
+
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(200), nullable=False)
     completed = db.Column(db.Boolean, default=False)
+    column_id = db.Column(db.Integer, db.ForeignKey('column.id'), nullable=False)
+
 
 @app.route('/')
 def index():
-    result = db.session.execute(db.select(Todo)).scalars()
-    todos = result.all()
-    return render_template("index.html", all_todos=todos)
+    results = db.session.execute(db.select(Board)).scalars()
+    boards = results.all()
+    return render_template("index.html", all_boards=boards)
+
+@app.route('/create_board', methods=['GET', 'POST'])
+def create_board():
+    form = BoardForm()
+    if form.validate_on_submit():
+        board_title = form.title.data
+        new_board = Board(title=board_title)
+        
+        default_columns = ["To Do", "In Progress", "Done"]
+        for col_title in default_columns:
+            column = Column(title=col_title, board=new_board)
+            db.session.add(column)
+        
+        db.session.add(new_board)
+        db.session.commit()
+        flash('Board created successfully!', 'success')
+        return redirect(url_for('index'))  # or redirect to the new board's page
+    return render_template('create_board.html', form=form)
+
+
+@app.route('/board/<int:board_id>')
+def display_board(board_id):
+    board = Board.query.get_or_404(board_id)
+    columns = Column.query.filter_by(board_id=board_id).all()
+    return render_template('board.html', board=board, columns=columns)
+
 
 @app.route('/add_todo', methods=['GET', 'POST'])
 def add_todo():
