@@ -44,6 +44,3 @@ class EditTaskForm(FlaskForm):
     priority_choices = [('high', 'High'), ('medium', 'Medium'), ('low', 'Low')]
     priority = SelectField('Priority', choices=priority_choices, default='medium')
     submit = SubmitField('Update Task')
-
-
-

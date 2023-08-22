@@ -100,7 +100,7 @@ def delete_board(board_id):
     return redirect(url_for('boards'))
 
 
-@app.route('/board/<int:board_id>')
+@app.route('/boards/<int:board_id>')
 @login_required
 def display_board(board_id):
     board = Board.query.get_or_404(board_id)
@@ -116,7 +116,7 @@ def display_board(board_id):
 
 
 
-@app.route('/board/<int:board_id>/add_task/<int:column_id>', methods=['GET', 'POST'])
+@app.route('/boards/<int:board_id>/add_task/<int:column_id>', methods=['GET', 'POST'])
 @login_required
 def add_task(board_id, column_id):
     form = TaskForm()
@@ -136,7 +136,7 @@ def add_task(board_id, column_id):
         return redirect(url_for('display_board', board_id=board_id))
     return render_template('add_task.html', form=form)
 
-@app.route('/board/<int:board_id>/edit', methods=['GET', 'POST'])
+@app.route('/boards/<int:board_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_board(board_id):
     board = db.get_or_404(Board, board_id)
@@ -150,7 +150,7 @@ def edit_board(board_id):
         form.title.data = board.title
     return render_template('edit_board.html', form=form, board=board)
 
-@app.route('/board/<int:board_id>/add_column', methods=['GET', 'POST'])
+@app.route('/boards/<int:board_id>/add_column', methods=['GET', 'POST'])
 @login_required
 def add_column(board_id):
     form = ColumnForm()
@@ -210,11 +210,19 @@ def edit_task(task_id):
     form = EditTaskForm()
     if form.validate_on_submit():
         task.task = form.task_content.data
+        task.priority = form.priority.data
+        if task.priority == 'High':
+            task.priority_value = 3
+        elif task.priority == 'Medium':
+            task.priority_value = 2
+        elif task.priority == 'Low':
+            task.priority_value = 1
         db.session.commit()
         flash('Task updated successfully!', 'success')
         return redirect(url_for('display_board', board_id=task.column.board_id))
     elif request.method == 'GET':
         form.task_content.data = task.task
+        form.priority.data = task.priority
     return render_template('edit_task.html', form=form, task=task)
 
 
