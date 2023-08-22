@@ -39,5 +39,9 @@ class EditColumnForm(FlaskForm):
     title = StringField('Column Title', validators=[DataRequired()])
     submit = SubmitField('Update Column')
 
+class EditTaskForm(FlaskForm):
+    task_content = StringField('Task', validators=[DataRequired()])
+    submit = SubmitField('Update Task')
+
 
 

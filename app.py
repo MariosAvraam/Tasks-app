@@ -6,7 +6,7 @@ from wtforms.validators import ValidationError
 from config import Config
 from models import Board, Column, Todo, User
 from database import db
-from forms import BoardForm, TaskForm, RegistrationForm, LoginForm, ColumnForm, EditBoardForm, EditColumnForm
+from forms import BoardForm, TaskForm, RegistrationForm, LoginForm, ColumnForm, EditBoardForm, EditColumnForm, EditTaskForm
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -208,6 +208,31 @@ def delete_column(column_id):
     db.session.delete(column)
     db.session.commit()
     flash('Column deleted successfully!', 'success')
+    return redirect(url_for('display_board', board_id=board_id))
+
+@app.route('/task/<int:task_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_task(task_id):
+    task = db.get_or_404(Todo, task_id)
+    form = EditTaskForm()
+    if form.validate_on_submit():
+        task.task = form.task_content.data
+        db.session.commit()
+        flash('Task updated successfully!', 'success')
+        return redirect(url_for('display_board', board_id=task.column.board_id))
+    elif request.method == 'GET':
+        form.task_content.data = task.task
+    return render_template('edit_task.html', form=form, task=task)
+
+
+@app.route('/task/<int:task_id>/delete', methods=['POST'])
+@login_required
+def delete_task(task_id):
+    task = db.get_or_404(Todo, task_id)
+    board_id = task.column.board_id
+    db.session.delete(task)
+    db.session.commit()
+    flash('Task deleted successfully!', 'success')
     return redirect(url_for('display_board', board_id=board_id))
 
 
