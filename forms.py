@@ -21,7 +21,6 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
     
-
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -31,5 +30,10 @@ class LoginForm(FlaskForm):
 class ColumnForm(FlaskForm):
     column_title = StringField('Column Title', validators=[DataRequired()])
     submit = SubmitField('Add Column')
+
+class EditBoardForm(FlaskForm):
+    title = StringField('Board Title', validators=[DataRequired()])
+    submit = SubmitField('Update Board')
+
 
 

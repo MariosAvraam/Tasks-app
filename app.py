@@ -6,6 +6,7 @@ from wtforms.validators import ValidationError
 from config import Config
 from models import Board, Column, Todo, User
 from database import db
+from forms import TodoForm, BoardForm, TaskForm, RegistrationForm, LoginForm, ColumnForm, EditBoardForm
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -21,8 +22,6 @@ def load_user(user_id):
 
 db.init_app(app)
 
-    
-from forms import TodoForm, BoardForm, TaskForm, RegistrationForm, LoginForm, ColumnForm
 
 def validate_username(form, username):
     user = User.query.filter_by(username=username.data).first()
@@ -144,6 +143,20 @@ def add_task(board_id, column_id):
         return redirect(url_for('display_board', board_id=board_id))
     return render_template('add_task.html', form=form)
 
+@app.route('/board/<int:board_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_board(board_id):
+    board = db.get_or_404(Board, board_id)
+    form = EditBoardForm()
+    if form.validate_on_submit():
+        board.title = form.title.data
+        db.session.commit()
+        flash('Board updated successfully!', 'success')
+        return redirect(url_for('boards', board_id=board_id))
+    elif request.method == 'GET':
+        form.title.data = board.title
+    return render_template('edit_board.html', form=form, board=board)
+
 @app.route('/board/<int:board_id>/add_column', methods=['GET', 'POST'])
 @login_required
 def add_column(board_id):
@@ -156,7 +169,6 @@ def add_column(board_id):
         flash('Column added successfully!', 'success')
         return redirect(url_for('display_board', board_id=board_id))
     return render_template('add_column.html', form=form, board=board)
-
 
 
 @app.route('/update_task_column', methods=['POST'])
