@@ -132,22 +132,6 @@ def add_task(board_id, column_id):
     return render_template('add_task.html', form=form)
 
 
-
-@app.route('/add_todo', methods=['GET', 'POST'])
-def add_todo():
-    form = TodoForm()
-    if form.validate_on_submit():
-        task = form.task.data
-        new_todo = Todo(
-            task=task,
-            completed=False,
-        )
-        db.session.add(new_todo)
-        db.session.commit()
-        flash('Task added successfully!', 'success')
-        return redirect(url_for('index'))
-    return render_template('add_todo.html', form=form)
-
 @app.route('/update_task_column', methods=['POST'])
 def update_task_column():
     data = request.json
@@ -163,13 +147,6 @@ def update_task_column():
 
     return jsonify(status='success')
 
-
-
-@app.route('/complete/<int:index>')
-def complete_todo(index):
-    if 0 <= index < len(todos):
-        todos[index]['completed'] = True
-    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     with app.app_context():
