@@ -5,14 +5,14 @@ from flask_login import UserMixin
 class Board(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
-    columns = db.relationship('Column', backref='board', lazy=True)
+    columns = db.relationship('Column', backref='board', lazy=True, cascade="all, delete-orphan")
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 class Column(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     board_id = db.Column(db.Integer, db.ForeignKey('board.id'), nullable=False)
-    todos = db.relationship('Todo', backref='column', lazy=True)
+    todos = db.relationship('Todo', backref='column', lazy=True, cascade="all, delete-orphan")
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)

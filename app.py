@@ -106,6 +106,21 @@ def create_board():
         return redirect(url_for('index'))  # or redirect to the new board's page
     return render_template('create_board.html', form=form)
 
+@app.route('/delete_board/<int:board_id>', methods=['POST'])
+@login_required
+def delete_board(board_id):
+    board = db.get_or_404(Board, board_id)
+    if board.user_id != current_user.id:
+        flash('Access denied!')
+        return redirect(url_for('boards'))
+    
+    db.session.delete(board)
+    db.session.commit()
+    flash('Board deleted successfully!', 'success')
+    return redirect(url_for('boards'))
+
+
+
 
 @app.route('/board/<int:board_id>')
 @login_required
