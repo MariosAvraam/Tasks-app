@@ -1,4 +1,4 @@
-from database import db
+from .database import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
@@ -12,13 +12,15 @@ class Column(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     board_id = db.Column(db.Integer, db.ForeignKey('board.id'), nullable=False)
-    todos = db.relationship('Todo', backref='column', lazy=True, cascade="all, delete-orphan")
+    tasks = db.relationship('Task', backref='column', lazy=True, cascade="all, delete-orphan")
 
-class Todo(db.Model):
+class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(200), nullable=False)
     completed = db.Column(db.Boolean, default=False)
     column_id = db.Column(db.Integer, db.ForeignKey('column.id'), nullable=False)
+    priority = db.Column(db.String(10), default='medium')
+    priority_value = db.Column(db.Integer, default=2)
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)

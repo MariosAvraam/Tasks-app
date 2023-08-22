@@ -1,28 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_bootstrap import Bootstrap5
-from flask import jsonify
-from flask_login import login_user, LoginManager, login_required, current_user, logout_user
+from flask import render_template, flash, redirect, url_for, request, jsonify
+from flask_login import login_required, current_user, login_user, logout_user
+from . import app, db
+from .forms import RegistrationForm, LoginForm, BoardForm, EditBoardForm, TaskForm, ColumnForm, EditColumnForm, EditTaskForm
+from .models import User, Board, Column, Task
 from wtforms.validators import ValidationError
-from config import Config
-from models import Board, Column, Todo, User
-from database import db
-from forms import BoardForm, TaskForm, RegistrationForm, LoginForm, ColumnForm, EditBoardForm, EditColumnForm, EditTaskForm
 
-app = Flask(__name__)
-app.config.from_object(Config)
-
-Bootstrap5(app)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-@login_manager.user_loader
-def load_user(user_id):
-    return db.get_or_404(User, user_id)
-
-db.init_app(app)
-
-
+# All route functions from app.py go here, unchanged.
 def validate_username(form, username):
     user = User.query.filter_by(username=username.data).first()
     if user is not None:
@@ -35,8 +18,6 @@ def validate_email(form, email):
 
 RegistrationForm.validate_username = validate_username
 RegistrationForm.validate_email = validate_email
-
-
 
 @app.route('/')
 def index():
@@ -126,8 +107,13 @@ def display_board(board_id):
     if board.user_id != current_user.id:
         flash('Access denied!')
         return redirect(url_for('boards'))
+    
     columns = Column.query.filter_by(board_id=board_id).all()
+    for column in columns:
+        column.tasks = Task.query.filter_by(column_id=column.id).order_by(Task.priority_value.desc()).all()
+    
     return render_template('board.html', board=board, columns=columns)
+
 
 
 @app.route('/board/<int:board_id>/add_task/<int:column_id>', methods=['GET', 'POST'])
@@ -136,7 +122,14 @@ def add_task(board_id, column_id):
     form = TaskForm()
     if form.validate_on_submit():
         task_content = form.task_content.data
-        new_task = Todo(task=task_content, completed=False, column_id=column_id)
+        task_priority = form.priority.data 
+        new_task = Task(task=task_content, completed=False, column_id=column_id, priority=task_priority)
+        if form.priority.data == 'high':
+            new_task.priority_value = 3
+        elif form.priority.data == 'medium':
+            new_task.priority_value = 2
+        else:  # low
+            new_task.priority_value = 1
         db.session.add(new_task)
         db.session.commit()
         flash('Task added successfully!', 'success')
@@ -177,7 +170,7 @@ def update_task_column():
     task_id = data['task_id']
     new_column_id = data['column_id']
 
-    task = Todo.query.get(task_id)
+    task = Task.query.get(task_id)
     if not task:
         return jsonify(status='error', message='Task not found')
 
@@ -213,7 +206,7 @@ def delete_column(column_id):
 @app.route('/task/<int:task_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_task(task_id):
-    task = db.get_or_404(Todo, task_id)
+    task = db.get_or_404(Task, task_id)
     form = EditTaskForm()
     if form.validate_on_submit():
         task.task = form.task_content.data
@@ -228,15 +221,9 @@ def edit_task(task_id):
 @app.route('/task/<int:task_id>/delete', methods=['POST'])
 @login_required
 def delete_task(task_id):
-    task = db.get_or_404(Todo, task_id)
+    task = db.get_or_404(Task, task_id)
     board_id = task.column.board_id
     db.session.delete(task)
     db.session.commit()
     flash('Task deleted successfully!', 'success')
     return redirect(url_for('display_board', board_id=board_id))
-
-
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
