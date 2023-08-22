@@ -1,3 +1,8 @@
+.navbar {
+  padding-left: 15px;
+}
+
+
 .draggable-list {
   min-height: 20px;
   border: 1px dashed #ccc;
@@ -11,4 +16,16 @@
   margin-bottom: 10px;
   border-radius: 5px;
   padding: 5px;
+}
+
+.board-columns {
+  display: flex;
+  flex-wrap: nowrap; /* Prevent columns from wrapping to the next line */
+  gap: 15px; /* Add some gap between columns */
+}
+
+.column {
+  flex: 1; /* Makes each column take equal width */
+  overflow-y: auto; /* Enable vertical scrolling if content is too long */
+  min-height: 300px; /* Set a minimum height for the column */
 }

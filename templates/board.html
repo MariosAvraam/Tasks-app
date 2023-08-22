@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>
+<h2 class="text-center">
   {{ board.title }}
 </h2>
-<a href="{{ url_for('add_column', board_id=board.id) }}">Add Column</a>
+<div class="text-center mb-4">
+  <a href="{{ url_for('add_column', board_id=board.id) }}">Add Column</a>
+</div>
 <div class="board-columns">
   {% for column in columns %}
   <div class="column" data-column-id="{{ column.id }}">
