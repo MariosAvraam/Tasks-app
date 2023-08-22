@@ -28,3 +28,8 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
+class ColumnForm(FlaskForm):
+    column_title = StringField('Column Title', validators=[DataRequired()])
+    submit = SubmitField('Add Column')
+
+

@@ -22,7 +22,7 @@ def load_user(user_id):
 db.init_app(app)
 
     
-from forms import TodoForm, BoardForm, TaskForm, RegistrationForm, LoginForm
+from forms import TodoForm, BoardForm, TaskForm, RegistrationForm, LoginForm, ColumnForm
 
 def validate_username(form, username):
     user = User.query.filter_by(username=username.data).first()
@@ -120,8 +120,6 @@ def delete_board(board_id):
     return redirect(url_for('boards'))
 
 
-
-
 @app.route('/board/<int:board_id>')
 @login_required
 def display_board(board_id):
@@ -145,6 +143,20 @@ def add_task(board_id, column_id):
         flash('Task added successfully!', 'success')
         return redirect(url_for('display_board', board_id=board_id))
     return render_template('add_task.html', form=form)
+
+@app.route('/board/<int:board_id>/add_column', methods=['GET', 'POST'])
+@login_required
+def add_column(board_id):
+    form = ColumnForm()
+    board = Board.query.get_or_404(board_id)
+    if form.validate_on_submit():
+        new_column = Column(title=form.column_title.data, board_id=board_id)
+        db.session.add(new_column)
+        db.session.commit()
+        flash('Column added successfully!', 'success')
+        return redirect(url_for('display_board', board_id=board_id))
+    return render_template('add_column.html', form=form, board=board)
+
 
 
 @app.route('/update_task_column', methods=['POST'])

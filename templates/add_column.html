@@ -1,0 +1,9 @@
+{% from 'bootstrap5/form.html' import render_form %}
+{% extends "base.html" %}
+{% block content %}
+<h2>Add a New Column to
+  {{ board.title }}
+</h2>
+
+{{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+{% endblock %}
