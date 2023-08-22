@@ -1,8 +1,14 @@
 .draggable-list {
   min-height: 20px;
   border: 1px dashed #ccc;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .draggable-list > li {
   min-height: auto;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 5px;
 }
