@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Boards</h2>
+{% for board in all_boards %}
+<div>
+  <h3><a href="{{ url_for('display_board', board_id=board.id) }}">
+      {{ board.title }}</a></h3>
+  <!-- You can add more details or links related to each board here -->
+</div>
+{% endfor %}
+{% endblock %}
