@@ -35,5 +35,9 @@ class EditBoardForm(FlaskForm):
     title = StringField('Board Title', validators=[DataRequired()])
     submit = SubmitField('Update Board')
 
+class EditColumnForm(FlaskForm):
+    title = StringField('Column Title', validators=[DataRequired()])
+    submit = SubmitField('Update Column')
+
 
 

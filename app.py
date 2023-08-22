@@ -6,7 +6,7 @@ from wtforms.validators import ValidationError
 from config import Config
 from models import Board, Column, Todo, User
 from database import db
-from forms import TodoForm, BoardForm, TaskForm, RegistrationForm, LoginForm, ColumnForm, EditBoardForm
+from forms import BoardForm, TaskForm, RegistrationForm, LoginForm, ColumnForm, EditBoardForm, EditColumnForm
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -185,6 +185,30 @@ def update_task_column():
     db.session.commit()
 
     return jsonify(status='success')
+
+@app.route('/column/<int:column_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_column(column_id):
+    column = db.get_or_404(Column, column_id)
+    form = EditColumnForm()
+    if form.validate_on_submit():
+        column.title = form.title.data
+        db.session.commit()
+        flash('Column updated successfully!', 'success')
+        return redirect(url_for('display_board', board_id=column.board_id))
+    elif request.method == 'GET':
+        form.title.data = column.title
+    return render_template('edit_column.html', form=form, column=column)
+
+@app.route('/column/<int:column_id>/delete', methods=['POST'])
+@login_required
+def delete_column(column_id):
+    column = db.get_or_404(Column, column_id)
+    board_id = column.board_id
+    db.session.delete(column)
+    db.session.commit()
+    flash('Column deleted successfully!', 'success')
+    return redirect(url_for('display_board', board_id=board_id))
 
 
 if __name__ == '__main__':
