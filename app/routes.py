@@ -226,6 +226,7 @@ def edit_task(task_id):
     elif request.method == 'GET':
         form.task_content.data = task.task
         form.priority.data = task.priority
+        form.deadline.data = task.deadline
     return render_template('edit_task.html', form=form, task=task)
 
 
