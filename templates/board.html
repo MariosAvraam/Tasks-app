@@ -39,9 +39,16 @@
         {% for task in column.tasks %}
         <li data-task-id="{{ task.id }}">
           <div class="{% if task.priority == 'high' %}alert alert-danger{% elif task.priority == 'medium' %}alert alert-warning{% else %}alert alert-success{% endif %}">
-            {{ task.task }}
+            <!-- Task Text and Date -->
+            <div class="task-content">
+              {{ task.task }}
+              <span class="text-warning">
+                {{ task.deadline.strftime('%Y-%m-%d') if task.deadline else '' }}
+              </span>
+            </div>
+
             <!-- Edit/Delete Task Buttons -->
-            <div>
+            <div class="task-actions">
               <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn btn-light btn-sm mr-2">
                 <i class="fas fa-edit"></i>
               </a>
