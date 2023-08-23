@@ -2,9 +2,12 @@
 
 {% extends "base.html" %}
 {% block content %}
+<!-- Title for Editing a Board -->
 <h2 class="text-center">Edit Board Title</h2>
+
 <div class="container mt-5">
   <div class="w-50 mx-auto">
+    <!-- Render Form for Editing Board Title -->
     {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
   </div>
 </div>
