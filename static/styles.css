@@ -13,7 +13,7 @@ h2 {
   margin-bottom: 20px;
 }
 
-/* Navbar */
+/* Navbar Styles */
 .navbar {
   padding-left: 15px;
   z-index: 2; 
@@ -24,10 +24,10 @@ nav a {
 }
 
 nav a:hover {
-  color: #FFD700;  /* Golden color for hover effect */
+  color: #FFD700; /* Golden color for hover effect */
 }
 
-/* Boards - Drag & Drop */
+/* Styles for Drag & Drop within Boards */
 .draggable-list {
   min-height: 20px;
   padding: 10px;
@@ -36,18 +36,16 @@ nav a:hover {
 
 .draggable-list > li {
   cursor: move;
-  min-height: auto;
   border: 1px solid #ccc;
   margin-bottom: 10px;
   border-radius: 5px;
-  padding: 15px 10px; /* Adjusted padding values */
-  margin: 10px 0;
+  padding: 15px 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .draggable-list > li .alert {
-  margin: 0;  /* Reset margin */
-  padding: .75rem 1.25rem;  /* Default padding for Bootstrap alerts */
+  margin: 0; 
+  padding: .75rem 1.25rem;
 }
 
 .board-columns {
@@ -73,11 +71,10 @@ nav a:hover {
 }
 
 .column ul.draggable-list {
-  min-height: 200px;  /* Adjust this value to your liking */
+  min-height: 200px;
 }
 
-
-/* Welcome Text */
+/* Styles for Welcome Text */
 .welcome-text {
   display: flex;
   justify-content: center;
@@ -106,7 +103,7 @@ nav a:hover {
   color: white;
 }
 
-/* Buttons */
+/* Styles for Buttons */
 .btn {
   border-radius: 25px;
   padding: 10px 20px;
@@ -149,7 +146,7 @@ nav a:hover {
 }
 
 .auth-btn {
-  width: 150px;   /* or whatever width you find suitable */
+  width: 150px;
   text-align: center;
 }
 
