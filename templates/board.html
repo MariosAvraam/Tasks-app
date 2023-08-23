@@ -74,13 +74,18 @@
     var scrollInterval;
 
     drake.on('drag', function(el, source) {
+      // For touch devices
       el.addEventListener('touchmove', function(e) {
         e.preventDefault();
       }, {
         passive: false
       });
 
+      // For both touch and mouse devices
       document.addEventListener('touchmove', handleAutoScroll, {
+        passive: false
+      });
+      document.addEventListener('mousemove', handleAutoScroll, {
         passive: false
       });
     });
@@ -88,19 +93,26 @@
     drake.on('dragend', function() {
       clearInterval(scrollInterval);
       document.removeEventListener('touchmove', handleAutoScroll);
+      document.removeEventListener('mousemove', handleAutoScroll);
     });
 
     function handleAutoScroll(e) {
       clearInterval(scrollInterval); // Clear any existing interval
 
-      var touchY = e.touches[0].clientY; // Get the vertical position of touch
+      var posY;
+      if (e.type === "touchmove") {
+        posY = e.touches[0].clientY; // Get the vertical position of touch
+      } else if (e.type === "mousemove") {
+        posY = e.clientY; // Get the vertical position of the mouse
+      }
+
       var viewportHeight = window.innerHeight;
 
-      if (touchY > viewportHeight - 50) { // if near bottom
+      if (posY > viewportHeight - 50) { // if near bottom
         scrollInterval = setInterval(function() {
           window.scrollBy(0, 20); // scroll down faster
         }, 16); // Roughly 60 frames per second
-      } else if (touchY < 50) { // if near top
+      } else if (posY < 50) { // if near top
         scrollInterval = setInterval(function() {
           window.scrollBy(0, -20); // scroll up faster
         }, 16);
