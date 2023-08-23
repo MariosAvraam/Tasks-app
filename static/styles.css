@@ -192,3 +192,8 @@ nav a:hover {
     width: calc(33.3333% - 20px); 
   }
 }
+
+.task-date {
+  color: #e30000 !important;
+  font-weight: bold;
+}
