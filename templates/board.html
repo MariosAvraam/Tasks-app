@@ -42,8 +42,8 @@
             <!-- Task Text and Date -->
             <div class="task-content">
               {{ task.task }}
-              <span class="text-warning">
-                {{ task.deadline.strftime('%Y-%m-%d') if task.deadline else '' }}
+              <span class="text-warning task-date">
+                {{ task.deadline.strftime('%d-%m-%Y') if task.deadline else '' }}
               </span>
             </div>
 
