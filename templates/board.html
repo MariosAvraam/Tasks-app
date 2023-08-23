@@ -1,16 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
+<!-- Board Title Display -->
 <h2 class="text-center">
   {{ board.title }}
 </h2>
+
+<!-- Add Column Button -->
 <div class="text-center mb-4">
   <a href="{{ url_for('add_column', board_id=board.id) }}" class="btn btn-primary mb-3">
     <i class="fas fa-plus-circle"></i> Add Column
   </a>
 </div>
+
+<!-- Display Board Columns -->
 <div class="board-columns">
   {% for column in columns %}
   <div class="column" data-column-id="{{ column.id }}">
+    <!-- Column Header: Title and Edit/Delete Column Buttons -->
     <div class="d-flex justify-content-between align-items-center mb-2">
       <h3>
         {{ column.title }}
@@ -26,12 +32,14 @@
         </form>
       </div>
     </div>
+
+    <!-- Task List within Column -->
     <ul class="draggable-list">
       {% for task in column.tasks %}
       <li data-task-id="{{ task.id }}">
-        <div class="{% if task.priority == 'high' %}alert alert-danger d-flex align-items-center justify-content-between{% elif task.priority == 'medium' %}alert alert-warning d-flex align-items-center justify-content-between{% else %}alert alert-success d-flex align-items-center justify-content-between{% endif %}">
-          <span>
-            {{ task.task }}</span>
+        <div class="{% if task.priority == 'high' %}alert alert-danger{% elif task.priority == 'medium' %}alert alert-warning{% else %}alert alert-success{% endif %}">
+          {{ task.task }}
+          <!-- Edit/Delete Task Buttons -->
           <div>
             <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn btn-light btn-sm mr-2">
               <i class="fas fa-edit"></i>
@@ -46,6 +54,8 @@
       </li>
       {% endfor %}
     </ul>
+
+    <!-- Add Task Button within Column -->
     <a href="{{ url_for('add_task', board_id=board.id, column_id=column.id) }}" class="btn btn-success mb-3">
       <i class="fas fa-plus-circle"></i> Add Task
     </a>
@@ -56,12 +66,11 @@
 
 {% block scripts %}
 <script>
+  // Script for Drag and Drop functionality using Dragula
   document.addEventListener('DOMContentLoaded', function() {
-    // Using Dragula to make the task lists draggable
     var drake = dragula([].slice.call(document.querySelectorAll('.column ul')));
 
     drake.on('drop', function(el, target, source, sibling) {
-      // When a task is dropped, send AJAX request to update the task's column in the database
       var taskId = el.getAttribute('data-task-id');
       var newColumnId = target.parentElement.getAttribute('data-column-id');
 
