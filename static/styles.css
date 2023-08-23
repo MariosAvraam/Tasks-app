@@ -1,3 +1,4 @@
+/* Base Styles */
 body {
   background: linear-gradient(to right, #e0eafc, #cfdef3);
   font-family: 'Arial', sans-serif;
@@ -12,10 +13,21 @@ h2 {
   margin-bottom: 20px;
 }
 
+/* Navbar */
 .navbar {
   padding-left: 15px;
+  z-index: 2; 
 }
 
+nav a {
+  color: white;
+}
+
+nav a:hover {
+  color: #FFD700;  /* Golden color for hover effect */
+}
+
+/* Boards - Drag & Drop */
 .draggable-list {
   min-height: 20px;
   border: 1px dashed #ccc;
@@ -36,51 +48,98 @@ h2 {
 
 .board-columns {
   display: flex;
-  flex-wrap: nowrap; /* Prevent columns from wrapping to the next line */
-  gap: 15px; /* Add some gap between columns */
+  flex-wrap: nowrap;
+  gap: 15px;
 }
 
 .column {
-  flex: 1; /* Makes each column take equal width */
-  overflow-y: auto; /* Enable vertical scrolling if content is too long */
-  min-height: 300px; /* Set a minimum height for the column */
-  background-color: #009CAA;  /* Dark blue color */
-  color: #ffffff;  /* Set text color to white for better readability on dark background */
+  flex: 1;
+  overflow-y: auto;
+  min-height: 300px;
+  background-color: #009CAA;
+  color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   padding: 20px;
   margin-bottom: 20px;
 }
 
+.column:hover, .draggable-list li:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Welcome Text */
+.welcome-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: #5c9ad3;
+  text-align: center;
+  z-index: 1;
+  flex-direction: column;
+}
+
+.welcome-text h2, .welcome-text p {
+  margin: 0;
+}
+
+.welcome-text p a {
+  color: #FFD700;
+  font-weight: bold;
+}
+
+.welcome-text p a:hover {
+  color: white;
+}
+
+/* Buttons */
 .btn {
   border-radius: 25px;
   padding: 10px 20px;
   transition: all 0.3s;
+  font-weight: bold;
+  border: none;
 }
 
 .btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  filter: brightness(90%);
-}
-
-.btn-primary {
-  background-color: #3498db;
-  border: none;
-}
-
-.btn-danger {
-  background-color: #e74c3c;
-  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 .btn:active {
   transform: scale(0.98);
 }
 
-
-.column:hover, .draggable-list li:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.btn-primary {
+  background-color: #5c9ad3;
+  background-image: linear-gradient(45deg, #5c9ad3, #7aadda);
+  color: white;
 }
 
+.btn-primary:hover {
+  background-image: linear-gradient(45deg, #4b89c0, #699ec7);
+}
 
+.btn-secondary {
+  background-color: #e0eafc;
+  background-image: linear-gradient(45deg, #e0eafc, #d3dbef);
+  color: #5c9ad3;
+}
+
+.btn-secondary:hover {
+  background-image: linear-gradient(45deg, #ced6e6, #c2cbe1);
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+}
+
+.auth-btn {
+  width: 150px;   /* or whatever width you find suitable */
+  text-align: center;
+}

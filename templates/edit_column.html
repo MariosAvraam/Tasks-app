@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% from "bootstrap5/form.html" import render_form %}
 {% block content %}
-<h2>Edit Column</h2>
-
-{{ render_form(form, novalidate=True) }}
+<h2 class="text-center">Edit Column</h2>
+<div class="container mt-5">
+  <div class="w-50 mx-auto">
+    {{ render_form(form, novalidate=True) }}
+  </div>
+</div>
 {% endblock %}
