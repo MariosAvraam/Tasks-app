@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms import StringField, PasswordField, SubmitField, SelectField, DateField
+from wtforms.validators import DataRequired, Email, EqualTo, Optional
+
 
 class BoardForm(FlaskForm):
     """Form to create a new board."""
@@ -12,6 +13,7 @@ class TaskForm(FlaskForm):
     task_content = StringField('Task', validators=[DataRequired()])
     priority_choices = [('high', 'High'), ('medium', 'Medium'), ('low', 'Low')]
     priority = SelectField('Priority', choices=priority_choices, default='medium')
+    deadline = DateField('Deadline', format='%Y-%m-%d', validators=[Optional()])
     submit = SubmitField('Add Task')
 
 
@@ -49,4 +51,5 @@ class EditTaskForm(FlaskForm):
     task_content = StringField('Task', validators=[DataRequired()])
     priority_choices = [('high', 'High'), ('medium', 'Medium'), ('low', 'Low')]
     priority = SelectField('Priority', choices=priority_choices, default='medium')
+    deadline = DateField('Deadline', format='%Y-%m-%d', validators=[Optional()])
     submit = SubmitField('Update Task')
