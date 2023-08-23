@@ -72,6 +72,13 @@
   document.addEventListener('DOMContentLoaded', function() {
     var drake = dragula([].slice.call(document.querySelectorAll('.column ul')));
 
+    // Prevent default touch behavior on drag start
+    drake.on('drag', function(el, source) {
+      el.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+      });
+    });
+
     drake.on('drop', function(el, target, source, sibling) {
       var taskId = el.getAttribute('data-task-id');
       var newColumnId = target.parentElement.getAttribute('data-column-id');
