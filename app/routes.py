@@ -123,8 +123,9 @@ def add_task(board_id, column_id):
     form = TaskForm()
     if form.validate_on_submit():
         task_content = form.task_content.data
-        task_priority = form.priority.data 
-        new_task = Task(task=task_content, completed=False, column_id=column_id, priority=task_priority)
+        task_priority = form.priority.data
+        deadline = form.deadline.data
+        new_task = Task(task=task_content, completed=False, column_id=column_id, priority=task_priority, deadline=deadline)
         if form.priority.data == 'high':
             new_task.priority_value = 3
         elif form.priority.data == 'medium':
@@ -212,6 +213,7 @@ def edit_task(task_id):
     if form.validate_on_submit():
         task.task = form.task_content.data
         task.priority = form.priority.data
+        task.deadline = form.deadline.data
         if task.priority == 'High':
             task.priority_value = 3
         elif task.priority == 'Medium':
