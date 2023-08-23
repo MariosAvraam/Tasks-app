@@ -1,10 +1,12 @@
 {% from 'bootstrap5/form.html' import render_form %}
 {% extends "base.html" %}
 {% block content %}
+<!-- Title for Adding a New Task -->
 <h2 class="text-center">Add a New Task</h2>
 <div class="container mt-5">
-    <div class="w-50 mx-auto">
-      {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
-    </div>
+  <div class="w-50 mx-auto">
+    <!-- Render Form for Adding a Task -->
+    {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
   </div>
+</div>
 {% endblock %}
