@@ -24,6 +24,7 @@ class Task(db.Model):
     column_id = db.Column(db.Integer, db.ForeignKey('column.id'), nullable=False)
     priority = db.Column(db.String(10), default='medium')
     priority_value = db.Column(db.Integer, default=2)
+    deadline = db.Column(db.Date, nullable=True)
 
 class User(UserMixin, db.Model):
     """Model for User."""
