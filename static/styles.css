@@ -78,6 +78,7 @@ h2 {
   transform: scale(0.98);
 }
 
+
 .column:hover, .draggable-list li:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

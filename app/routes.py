@@ -75,7 +75,7 @@ def create_board():
         board_title = form.title.data
         new_board = Board(title=board_title, user_id=current_user.id)
         
-        default_columns = ["To Do", "In Progress", "Done"]
+        default_columns = ["To Do", "Doing", "Done"]
         for col_title in default_columns:
             column = Column(title=col_title, board=new_board)
             db.session.add(column)
