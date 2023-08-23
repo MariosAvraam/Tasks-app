@@ -71,13 +71,35 @@
   // Script for Drag and Drop functionality using Dragula
   document.addEventListener('DOMContentLoaded', function() {
     var drake = dragula([].slice.call(document.querySelectorAll('.column ul')));
+    var scrollInterval;
 
-    // Prevent default touch behavior on drag start
     drake.on('drag', function(el, source) {
       el.addEventListener('touchmove', function(e) {
         e.preventDefault();
+      }, {
+        passive: false
+      });
+
+      document.addEventListener('touchmove', handleAutoScroll, {
+        passive: false
       });
     });
+
+    drake.on('dragend', function() {
+      clearInterval(scrollInterval);
+      document.removeEventListener('touchmove', handleAutoScroll);
+    });
+
+    function handleAutoScroll(e) {
+      var touchY = e.touches[0].clientY; // Get the vertical position of touch
+      var viewportHeight = window.innerHeight;
+
+      if (touchY > viewportHeight - 50) { // if near bottom
+        window.scrollBy(0, 10); // scroll down
+      } else if (touchY < 50) { // if near top
+        window.scrollBy(0, -10); // scroll up
+      }
+    }
 
     drake.on('drop', function(el, target, source, sibling) {
       var taskId = el.getAttribute('data-task-id');
