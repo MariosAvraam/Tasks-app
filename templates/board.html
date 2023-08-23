@@ -13,54 +13,56 @@
 </div>
 
 <!-- Display Board Columns -->
-<div class="board-columns">
-  {% for column in columns %}
-  <div class="column" data-column-id="{{ column.id }}">
-    <!-- Column Header: Title and Edit/Delete Column Buttons -->
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <h3>
-        {{ column.title }}
-      </h3>
-      <div>
-        <a href="{{ url_for('edit_column', column_id=column.id) }}" class="btn btn-light btn-sm">
-          <i class="fas fa-edit"></i>
-        </a>
-        <form action="{{ url_for('delete_column', column_id=column.id) }}" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this column?');">
-          <button type="submit" class="btn btn-danger btn-sm">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Task List within Column -->
-    <ul class="draggable-list">
-      {% for task in column.tasks %}
-      <li data-task-id="{{ task.id }}">
-        <div class="{% if task.priority == 'high' %}alert alert-danger{% elif task.priority == 'medium' %}alert alert-warning{% else %}alert alert-success{% endif %}">
-          {{ task.task }}
-          <!-- Edit/Delete Task Buttons -->
-          <div>
-            <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn btn-light btn-sm mr-2">
-              <i class="fas fa-edit"></i>
-            </a>
-            <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this task?');">
-              <button type="submit" class="btn btn-danger btn-sm">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            </form>
-          </div>
+<div class="container">
+  <div class="board-columns">
+    {% for column in columns %}
+    <div class="column" data-column-id="{{ column.id }}">
+      <!-- Column Header: Title and Edit/Delete Column Buttons -->
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h3>
+          {{ column.title }}
+        </h3>
+        <div>
+          <a href="{{ url_for('edit_column', column_id=column.id) }}" class="btn btn-light btn-sm">
+            <i class="fas fa-edit"></i>
+          </a>
+          <form action="{{ url_for('delete_column', column_id=column.id) }}" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this column?');">
+            <button type="submit" class="btn btn-danger btn-sm">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </form>
         </div>
-      </li>
-      {% endfor %}
-    </ul>
+      </div>
 
-    <!-- Add Task Button within Column -->
-    <a href="{{ url_for('add_task', board_id=board.id, column_id=column.id) }}" class="btn btn-success mb-3">
-      <i class="fas fa-plus-circle"></i> Add Task
-    </a>
+      <!-- Task List within Column -->
+      <ul class="draggable-list">
+        {% for task in column.tasks %}
+        <li data-task-id="{{ task.id }}">
+          <div class="{% if task.priority == 'high' %}alert alert-danger{% elif task.priority == 'medium' %}alert alert-warning{% else %}alert alert-success{% endif %}">
+            {{ task.task }}
+            <!-- Edit/Delete Task Buttons -->
+            <div>
+              <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn btn-light btn-sm mr-2">
+                <i class="fas fa-edit"></i>
+              </a>
+              <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this task?');">
+                <button type="submit" class="btn btn-danger btn-sm">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <!-- Add Task Button within Column -->
+      <a href="{{ url_for('add_task', board_id=board.id, column_id=column.id) }}" class="btn btn-success mb-3">
+        <i class="fas fa-plus-circle"></i> Add Task
+      </a>
+    </div>
+    {% endfor %}
   </div>
-  {% endfor %}
 </div>
 {% endblock %}
 
