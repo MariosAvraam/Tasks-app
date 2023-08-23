@@ -5,5 +5,5 @@ load_dotenv()
 
 class Config:
     """Configuration class for the Flask app."""
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///tasks.db'
+    SQLALCHEMY_DATABASE_URI = getenv("DATABASE_URL")
     SECRET_KEY = getenv("SECRET_KEY")
