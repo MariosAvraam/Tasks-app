@@ -1,15 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-<div id="home-background">
-</div>
+<div id="home-background"></div>
+
 <div class="welcome-text">
+  <!-- Welcome Message for Users -->
   <h2>Welcome to the Tasks App</h2>
   <p>Manage your tasks efficiently.</p>
-  <!-- Styling the Register link as a primary button -->
+  <!-- Registration and Login Buttons -->
   <a href="{{ url_for('register') }}" class="btn btn-primary auth-btn">Register</a>
-  <!-- Adding some space between the buttons -->
-  <span style="margin: 0 10px;"></span>
-  <!-- Styling the Login link as a secondary button -->
   <a href="{{ url_for('login') }}" class="btn btn-secondary auth-btn">Login</a>
 </div>
 {% endblock %}
