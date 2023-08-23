@@ -161,6 +161,18 @@ nav a:hover {
   align-items: center;
 }
 
+.task-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.task-actions {
+    display: flex;
+    align-items: center;
+}
+
 /* Board Column Layout */
 .board-columns {
   display: flex;
