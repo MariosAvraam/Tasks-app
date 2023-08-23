@@ -16,8 +16,12 @@ h2 {
 /* Navbar Styles */
 .navbar {
   padding-left: 15px;
-  z-index: 2; 
+  z-index: 2;
+  position: sticky; 
+  top: 0;
+  background-color: inherit;
 }
+
 
 nav a {
   color: white;
