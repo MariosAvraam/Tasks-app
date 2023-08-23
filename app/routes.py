@@ -75,7 +75,7 @@ def create_board():
         board_title = form.title.data
         new_board = Board(title=board_title, user_id=current_user.id)
         
-        default_columns = ["To Do", "Doing", "Done"]
+        default_columns = ["To Do", "In Progress", "Done"]
         for col_title in default_columns:
             column = Column(title=col_title, board=new_board)
             db.session.add(column)
@@ -83,7 +83,7 @@ def create_board():
         db.session.add(new_board)
         db.session.commit()
         flash('Board created successfully!', 'success')
-        return redirect(url_for('index'))  # or redirect to the new board's page
+        return redirect(url_for('display_board', board_id=new_board.id))  # or redirect to the new board's page
     return render_template('create_board.html', form=form)
 
 @app.route('/delete_board/<int:board_id>', methods=['POST'])

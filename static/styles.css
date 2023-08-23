@@ -30,20 +30,24 @@ nav a:hover {
 /* Boards - Drag & Drop */
 .draggable-list {
   min-height: 20px;
-  border: 1px dashed #ccc;
   padding: 10px;
   border-radius: 5px;
 }
 
 .draggable-list > li {
+  cursor: move;
   min-height: auto;
   border: 1px solid #ccc;
   margin-bottom: 10px;
   border-radius: 5px;
-  padding: 10px;
+  padding: 15px 10px; /* Adjusted padding values */
   margin: 10px 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
+}
+
+.draggable-list > li .alert {
+  margin: 0;  /* Reset margin */
+  padding: .75rem 1.25rem;  /* Default padding for Bootstrap alerts */
 }
 
 .board-columns {
@@ -67,6 +71,11 @@ nav a:hover {
 .column:hover, .draggable-list li:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+.column ul.draggable-list {
+  min-height: 200px;  /* Adjust this value to your liking */
+}
+
 
 /* Welcome Text */
 .welcome-text {
@@ -142,4 +151,15 @@ nav a:hover {
 .auth-btn {
   width: 150px;   /* or whatever width you find suitable */
   text-align: center;
+}
+
+.gu-mirror {
+  list-style-type: none !important;
+  padding-left: 0 !important;
+}
+
+.alert {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
