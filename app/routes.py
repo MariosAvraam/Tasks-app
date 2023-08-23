@@ -5,13 +5,14 @@ from .forms import RegistrationForm, LoginForm, BoardForm, EditBoardForm, TaskFo
 from .models import User, Board, Column, Task
 from wtforms.validators import ValidationError
 
-# All route functions from app.py go here, unchanged.
 def validate_username(form, username):
+    """Validate if the username is unique."""
     user = User.query.filter_by(username=username.data).first()
     if user is not None:
         raise ValidationError('Username already in use.')
 
 def validate_email(form, email):
+    """Validate if the email is unique."""
     user = User.query.filter_by(email=email.data).first()
     if user is not None:
         raise ValidationError('Email already registered.')
@@ -35,7 +36,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('Congratulations, you are now registered!')
-        login_user(user)  # Automatically log the user in after registration
+        login_user(user)
         return redirect(url_for('index'))
     return render_template('register.html', form=form)
 
@@ -47,7 +48,7 @@ def login():
         email = form.email.data
         user = User.query.filter_by(email=email).first()
         if user and user.check_password(form.password.data):
-            login_user(user, remember=form.remember_me.data)
+            login_user(user)
             return redirect(url_for('index'))
         else:
             flash('Invalid email or password')
@@ -83,7 +84,7 @@ def create_board():
         db.session.add(new_board)
         db.session.commit()
         flash('Board created successfully!', 'success')
-        return redirect(url_for('display_board', board_id=new_board.id))  # or redirect to the new board's page
+        return redirect(url_for('display_board', board_id=new_board.id))
     return render_template('create_board.html', form=form)
 
 @app.route('/delete_board/<int:board_id>', methods=['POST'])
@@ -128,7 +129,7 @@ def add_task(board_id, column_id):
             new_task.priority_value = 3
         elif form.priority.data == 'medium':
             new_task.priority_value = 2
-        else:  # low
+        else:
             new_task.priority_value = 1
         db.session.add(new_task)
         db.session.commit()
