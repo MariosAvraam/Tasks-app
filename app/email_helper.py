@@ -4,21 +4,30 @@ from datetime import date
 from .models import Task, User, Board, Column
 from . import app
 from datetime import timedelta
+from os import getenv
+from dotenv import load_dotenv
+
+load_dotenv()
+
+SMTP_SERVER = getenv("SMTP_SERVER")
+SMTP_PORT = getenv("SMTP_PORT")
+EMAIL_ADDRESS = getenv("EMAIL_ADDRESS")
+EMAIL_PASSWORD = getenv("EMAIL_PASSWORD")
 
 def send_email(subject, body, to_email):
     try:
-        with smtplib.SMTP(app.config['SMTP_SERVER'], app.config['SMTP_PORT']) as server:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
             server.ehlo()
             server.starttls()
             server.ehlo()
-            server.login(app.config['EMAIL_ADDRESS'], app.config['EMAIL_PASSWORD'])
+            server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
             
             msg = MIMEText(body)
             msg['Subject'] = subject
-            msg['From'] = app.config['EMAIL_ADDRESS']
+            msg['From'] = EMAIL_ADDRESS
             msg['To'] = to_email
             
-            server.sendmail(app.config['EMAIL_ADDRESS'], to_email, msg.as_string())
+            server.sendmail(EMAIL_ADDRESS, to_email, msg.as_string())
         return True
     except Exception as e:
         print(f"Failed to send email to {to_email}. Error: {e}")
