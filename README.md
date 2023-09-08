@@ -1,6 +1,6 @@
 # Tasks App
 
-An intuitive web-based task management application that supports dynamic board, column, and task creation with drag-and-drop functionality for seamless organization. Check it out [here](https://tasks-app-319n.onrender.com/).
+An intuitive web-based task management application that supports dynamic board, column, and task creation with drag-and-drop functionality for seamless organization. Plus, get timely email reminders from one week leading up to your task deadline. Check it out [here](https://testingcodegm1.pythonanywhere.com).
 
 ![Screenshot of Website](static/screenshot_image.png)
 
