@@ -197,3 +197,11 @@ nav a:hover {
   color: #e30000 !important;
   font-weight: bold;
 }
+
+
+@media (max-width: 767.98px) {
+  .form-group, .form-control {
+      width: 100% !important;
+      box-sizing: border-box;
+  }
+}
